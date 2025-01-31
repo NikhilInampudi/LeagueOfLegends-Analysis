@@ -85,6 +85,7 @@ def get_puuid(summoner_name, tagline, region, api_key):
 #Calling function to get desired puuid
 get_puuid('Phantóm', 'NA1', 'americas', api_key)
 ```
+<br><br>
 **Function #2 allows us to get the 20 recent Match IDS by passing PUUID and Region**
 
 <div style="max-height: 400px; overflow-y: auto;">
@@ -110,6 +111,7 @@ def get_matches(puuid, region, api_key):
 #Calling function to get 20 most recent match IDS for specified user
 get_matches('jq_A-Q1qsDMSLr7KbONxw_JBVPdGJq6hxcIgZq2GHynjwJyuKF45IGTAoFJmpPPo-36Fpm4qtl4BNQ', 'americas', api_key)
 ```
+<br><br>
 **Function #3 allows us to get the match data by passing Match ID and Region**
 
 <div style="max-height: 400px; overflow-y: auto;">
@@ -133,6 +135,7 @@ def get_match_data(match_id, region, api_key):
 #Calling function to get all match data for a specified match id
 get_match_data('NA1_5194605614', 'americas', api_key)
 ```
+<br><br>
 **Function #4 allows us to get the specific player data by passing Match Data and PUUID.**
 
 <div style="max-height: 400px; overflow-y: auto;">
@@ -148,6 +151,7 @@ def find_player_data(match_data, puuid):
             return participant  # Return the matching participant's data
     return None
 ```
+<br><br>
 **Function #5 is the final function, combining the previous two functions to retrieve player data. To obtain data for the last 20 matches, we use a for-loop to iterate through the list of match IDs, extracting the relevant data and storing it in a pandas DataFrame. This process returns a structured dataset with 20 rows, each representing a match, and columns defined within the function.**
 
 <div style="max-height: 400px; overflow-y: auto;">
@@ -227,7 +231,32 @@ def retrieve_all_data(puuid, region, api_key):
     
     return df
 ```
+<br><br>
+Function is called to return DataFrame.
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Looking at df to understand table structure and data
+df = retrieve_all_data('jq_A-Q1qsDMSLr7KbONxw_JBVPdGJq6hxcIgZq2GHynjwJyuKF45IGTAoFJmpPPo-36Fpm4qtl4BNQ', 'americas', api_key)
 
+df
+```
+
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-Analysis/blob/de38b0ac20ebb70706426e4c3765406008def021/League%20Of%20Legends%20Dataframe.png" width="700" height="600" />
+
+<br><br>
+*Interesting Note:*
+Form of Pre-Processing was done in the function when converting the Python dictionary into a Dataframe.
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+##Converting data dictionary to dataframe object for analysis/manipulation
+    df = pd.DataFrame(data)
+
+    df['win'] = df['win'].astype(int) # change this column from boolean (True/False) to be integers (1/0)
+    
+    return df
+```
 
 
 
