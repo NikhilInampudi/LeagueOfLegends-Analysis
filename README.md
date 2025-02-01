@@ -246,7 +246,7 @@ df
 
 <br><br>
 *Interesting Note:*
-Form of Pre-Processing was done in the function when converting the Python dictionary into a Dataframe.
+Form of Pre-Processing was done in the function when converting the Python dictionary into a Dataframe. By changing the values in the win column to 1/0 instead of win/loss, there is no need for label encoding later when attempting to fit the model. 
 <div style="max-height: 400px; overflow-y: auto;">
     
 ```python
@@ -257,6 +257,102 @@ Form of Pre-Processing was done in the function when converting the Python dicti
     
     return df
 ```
+
+## Exploratory Data Analysis
+Exploratory Data Analysis (EDA) is a critical step in the data analysis process. It involves investigating and summarizing the main characteristics of a dataset, often using visual methods, to understand its structure, patterns, and relationships before applying more formal statistical techniques or machine learning models. In this phase, I used different visualization techniques and methods to visualize correlations between variables, aggregation values by champion, and distribution of certain values. 
+
+<br><br>
+**Getting descriptive statistics about dataset**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Get descriptive statistics to understand data
+df.describe()
+```
+
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-Analysis/blob/e2444fd3989c8ec63ad140b5fa74b9daa1ad6f0e/Match%20Statistics%20Output.png" width="900" height="400" />
+
+
+<br><br>
+**Manipulating pandas dataframe to get top champions by damage dealt**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Aggregating damage by champion and ordering by most to least
+df_damage = df.groupby('champion', as_index=False)['damage_dealt'].sum()
+
+df_damage = df_damage.sort_values(by='damage_dealt', ascending=False)
+
+##Storing in new dataframe and getting top 10 rows
+df_damage.head(10)
+```
+
+**Implementing matplotlib to visualize damage dealt per champion**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Adding dependencies for visualiziation creations
+import matplotlib.pyplot as plt
+
+##Creating bar chart to show damage by champion in descending order
+color = ['lightcoral', 'gold', 'blue', 'orange', 'green', 'purple', 'orchid']
+
+plt.figure(figsize = (8, 5))
+
+plt.gcf().set_facecolor('darkgrey')
+plt.gca().set_facecolor('black')
+
+plt.bar(df_damage['champion'], df_damage['damage_dealt'], color=color)
+plt.title('Damage by Champion', fontsize = 15, fontweight = 'bold')
+plt.xlabel('Champions', fontweight = 'bold')
+plt.ylabel('Damage Dealt', fontweight = 'bold')
+plt.xticks(rotation=45)
+
+plt.show()
+```
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-Analysis/blob/1289aaa7dbbac301b55e4f44a6a13c9417413965/Visualizations/Damage%20by%20Champion.png" width="900" height="600" />
+
+
+<br><br>
+**Manipulating pandas dataframe to get top average deaths by champion**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Aggregating average deaths by champion 
+df_deaths = df.groupby('champion', as_index=False)['deaths'].mean()
+
+df_deaths = df_deaths.sort_values(by='deaths', ascending=False)
+
+df_deaths.head()
+```
+
+**Creating lollipop chart to visualize champions which I average the most deaths**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Creating lollipop chart to visualize death average by champion played
+plt.figure(figsize = (8, 5))
+
+plt.gcf().set_facecolor('skyblue')
+
+plt.stem(df_deaths['champion'], df_deaths['deaths'], linefmt='slategrey', markerfmt='indigo', basefmt=' ')
+ax = plt.gca()
+ax.set_facecolor('gainsboro')
+
+plt.title('Deaths by Champion', fontsize=15, fontweight='bold')
+plt.xlabel('Champions', fontweight='bold')
+plt.ylabel('Average Deaths', fontweight='bold')
+plt.xticks(rotation=45)
+
+plt.show()
+```
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-Analysis/blob/82a0843f668cb8dd6cf287e354a9136ef94aa180/Visualizations/Average%20Deaths%20by%20Champion%20Lollipop%20Chart.png" width="900" height="600" />
+
+
+
+
+
+
 
 
 
