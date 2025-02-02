@@ -3,15 +3,31 @@
 
 ## Table of Contents
 - [Overview](#overview)
+- [Tools Used](#tools-used)
+- [Problem Statement](#problem-statement)
 - [Project Structure](#project-structure)
 - [Data Extraction](#data-extraction)
 - [Data Transformation](#data-transformation)
 - [Exploratory Data Analysis (EDA)](#exploratory-data-analysis)
 - [Feature Engineering](#feature-engineering)
 - [Machine Learning](#machine-learning)
+- [Results and Insights](#results-and-insights)
 
 ## Overview
-This project focuses on analyzing player data from the popular online game League of Legends using the Riot Games API. The goal is to extract, process, and visualize various player statistics to gain insights into player performance, champion usage, and other key metrics. The project also utilizes certain fields such as kills and assists to predict whether a match outcome will be win or loss. The project is implemented in a Jupyter Notebook and leverages Python libraries such as requests, pandas, matplotlib, seaborn, and sci-kit learn for data extraction, manipulation, visualization, and machine learning.
+As an avid *League of Legends* player and data science enthusiast, I wanted to combine my passion for gaming with my interest in data analysis. This project aims to provide actionable insights into player performance, champion effectiveness, and match outcomes, helping players like me optimize their strategies and improve their gameplay. This project focuses on analyzing player data by using the Riot Games API. The goal is to extract, process, and visualize various player statistics to gain insights into player performance, champion usage, and other key metrics. The project also utilizes certain fields such as kills and assists to predict whether a match outcome will be win or loss. The project is implemented in a Jupyter Notebook and leverages Python libraries such as requests, pandas, matplotlib, seaborn, and sci-kit learn for data extraction, manipulation, visualization, and machine learning.
+
+## Tools Used
+- Visual Studio Code
+- Jupyter Notebook
+- Python Libaries:
+  - Requests
+  - Pandas
+  - Matplotlib
+  - Seaborn
+  - Sci-kit Learn
+
+## Problem Statement
+How can I analyze League of Legends match data to optimize my in-game strategies and what habits do I tend to have on specific champions?
 
 ## Project Structure
 The project is divided into several sections, each focusing on a different aspect of data science:
@@ -538,6 +554,14 @@ print(f'New Predictions: {new_prediction}')
 ```
 <img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/0da6250578e393c6223a141eecb31d2f7ed82eb9/Prediction%20Output.png" width="500" height="50" />
 
+
+## Results and Insights
+- **Kills and Assists**: These were the most significant predictors of match outcomes, with higher values strongly correlating with wins.
+- **Champion Performance**:
+     - Certain champions consistently outperformed others in terms of damage dealt such as Twitch, Ezreal, and Jinx.
+     - Certain champions I am more prone to dying on such as Varus, Lux, LeBlanc.
+     - I get an average of 4.5 - 5 killing sprees a match which means I am more likely to go on long kill streaks.  
+- **Win/Loss Ratio**: The model achieved an accuracy of 75% in predicting match outcomes based on total-game statistics. 
 
 
 
