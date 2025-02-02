@@ -7,7 +7,7 @@ The project is divided into several sections, each focusing on a different aspec
 
 1. **Data Extraction:** Using the Riot Games API to fetch player data, including match history, champion performance, and other relevant statistics.
 
-2. **Data Cleaning/Transformation:** Converting the extracted data into a dataframe object and changing data types so format is suitable for analysis and predictive modeling.
+2. **Data Transformation:** Converting the extracted data into a dataframe object and changing data types so format is suitable for analysis and predictive modeling.
 
 3. **Exploratory Data Analysis (EDA):** Performing initial analysis to understand the data distribution, identify trends, and generate insights. Creating visual representations of the data to better understand player performance, champion usage, and win/loss ratio. 
 
@@ -232,6 +232,7 @@ def retrieve_all_data(puuid, region, api_key):
     return df
 ```
 <br><br>
+## Data Transformation
 Function is called to return DataFrame.
 <div style="max-height: 400px; overflow-y: auto;">
     
@@ -257,7 +258,7 @@ Form of Pre-Processing was done in the function when converting the Python dicti
     
     return df
 ```
-
+<br><br>
 ## Exploratory Data Analysis
 Exploratory Data Analysis (EDA) is a critical step in the data analysis process. It involves investigating and summarizing the main characteristics of a dataset, often using visual methods, to understand its structure, patterns, and relationships before applying more formal statistical techniques or machine learning models. In this phase, I used different visualization techniques and methods to visualize correlations between variables, aggregation values by champion, and distribution of certain values. 
 
@@ -347,6 +348,187 @@ plt.xticks(rotation=45)
 plt.show()
 ```
 <img src="https://github.com/NikhilInampudi/LeagueOfLegends-Analysis/blob/82a0843f668cb8dd6cf287e354a9136ef94aa180/Visualizations/Average%20Deaths%20by%20Champion%20Lollipop%20Chart.png" width="900" height="600" />
+
+
+
+<br><br>
+**Creating pie chart to visualize counts of win/loss for last 20 matches**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Creating pie chart to visualize win/loss split
+win_loss = df.win.value_counts()
+
+label = ['Wins', 'Losses']
+
+plt.pie(win_loss, labels=win_loss)
+plt.legend(label, title='Legend')
+plt.title('Win/Loss', fontsize=15, fontweight='bold')
+
+plt.show()
+```
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/c73951b8a907496b1e835c080a0e24217964ac23/Visualizations/Win%20Loss%20Pie%20Chart.png" width="500" height="500" />
+
+
+<br><br>
+**Creating histogram to visualize killing spree distribution**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Creating histogram to visualize killing spree count distribution with measures of central tendency
+killing_sprees = df.killing_sprees
+
+mean_value = killing_sprees.mean()
+median_value = killing_sprees.median()
+min_value = killing_sprees.min()
+max_value = killing_sprees.max()
+
+plt.figure(figsize = (8, 5))
+
+plt.hist(killing_sprees)
+
+plt.axvline(x=mean_value, color='red')
+plt.axvline(x=median_value, color='yellow')
+plt.axvline(x=min_value, color='black')
+plt.axvline(x=max_value, color='black')
+
+plt.title('Killing Spree Distribution')
+plt.xlabel('Killing Sprees')
+plt.ylabel('Frequency')
+
+plt.show()
+```
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/921093d2a8fab62ebf8848acc48b17c571492579/Visualizations/Killing%20Spree%20Histogram.png" width="725" height="550" />
+
+
+<br><br>
+## Feature Engineering
+Feature engineering is a crucial step in the machine learning pipeline that involves transforming raw data into meaningful features that can improve the performance of machine learning models.In this project, I applied feature engineering by creating new features with the goal of achieving a stronger correlation with the target variable, "win." My reasoning was that by enhancing these relationships, the model could gain better predictive power and more effectively uncover underlying patterns in the data.
+
+<br><br>
+**Creating new features called "Gold per minute" and "Damage dealt per minute"**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Creating new features to test stronger correlations
+df['gold per Minute'] = round(df['gold'] / df['Playtime (s)'] * 60, 2)
+
+df['damage_dealt per minute'] = round(df['damage_dealt'] / df['Playtime (s)'] * 60, 2)
+
+df.head()
+```
+
+**Scaling features so there isn't any bias for values that are naturally higher. By doing this we can ensure that all the variables are treated fairly.** 
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Scaling features to standardize data
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+
+df[['gold per Minute', 'damage_dealt per minute']] = scaler.fit_transform(df[['gold per Minute', 'damage_dealt per minute']])
+
+df[['kills', 'assists']] = scaler.fit_transform(df[['kills', 'assists']])
+
+df.head()
+```
+
+<br><br>
+**I utilized the seaborn library to generate a correlation heatmap, which provided a visual matrix illustrating the relationships between all variables. By analyzing this heatmap, I identified the variables with the strongest correlations to the target variable, "win." Although I engineered new features such as "Gold per minute" and "Damage dealt per minute," their correlation with "win" was weaker compared to the original variables. As a result, I opted to use "kills" and "assists" as the primary features for the model. Given the limited size of the dataset, I chose to keep the number of features minimal to avoid introducing unnecessary complexity, which could potentially hinder the model's performance.**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+import seaborn as sns
+
+#Calculate the correlation matrix
+df_corr = df.drop(columns=['champion'])
+correlation_matrix = df_corr.corr()
+
+##Step 2: Use seaborn to create the heatmap
+plt.figure(figsize=(12, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='inferno', linewidths=0.5)
+plt.title('Correlation Heatmap')
+plt.show()
+```
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/0d570877faeb35faf36eee429e6f1cb2fd92c14f/Visualizations/Correlation%20Heatmap.png" width="775" height="600" />
+
+
+<br><br>
+## Machine Learning
+I chose to implement a Logistic Regression algorithm due to its strong suitability for binary classification tasks, such as predicting wins and losses. Given the small size of the dataset, more complex models like neural networks or ensemble methods are often prone to overfitting. In contrast, Logistic Regression, as a simple and linear model, is less likely to overfit when working with limited data. Additionally, this algorithm performs exceptionally well with fewer features that exhibit a linear relationship with the target variable, making it an ideal choice for this specific problem.
+
+<br><br>
+**Implementing sci-kit learn library to create training / testing sets for our predictors / target variables.** 
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Adding dependencies for train/test, model building, and evluation metrics
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+##Creating x variable for features and y variable for target
+x = df.drop(columns = ['win', 'gold', 'killing_sprees', 'damage_dealt', 'champion', 'deaths', 'Playtime (s)', 'damage_dealt per minute', 'gold per Minute'])
+y = df['win']
+
+##Splitting data into train/test
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.20, random_state=42)
+```
+**Creating the model and fitting 80% of our dataset as training data**   
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Creating Logistic Regression Model 
+model = LogisticRegression()
+
+#Fitting training features and target into model
+model.fit(x_train, y_train)
+```
+**Using the model to predict the testing features**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Make predictions based off test features
+prediction = model.predict(x_test)
+```
+**Using different evluation metrics to compare the results of the actuals in our testing set and the prediction**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Evaluation methods to compare output accuracy
+accuracy = accuracy_score(y_test, prediction)
+print('Accuracy Score:')
+print(accuracy)
+
+matrix = confusion_matrix(y_test, prediction)
+print('Confusion Matrix Score:')
+print(matrix)
+
+report = classification_report(y_test, prediction)
+print('Classification Report')
+print(report)
+```
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/dcd56d03ce593251173eae4803f80c2e8fb94a0f/Evaluation%20Output.png" width="600" height="500" />
+<br><br>
+
+**Predicting outcome of match with new data**
+<div style="max-height: 400px; overflow-y: auto;">
+    
+```python
+#Testing model on newly created dataset to get win/losses
+new_data = [[27, 20], [10, 30], [4, 20], [18, 9], [20, 10], [25, 18]]
+
+new_data = scaler.transform(new_data)
+
+new_prediction = model.predict(new_data)
+
+print(f'New Predictions: {new_prediction}')
+```
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/0da6250578e393c6223a141eecb31d2f7ed82eb9/Prediction%20Output.png" width="500" height="50" />
+
+
+
 
 
 
