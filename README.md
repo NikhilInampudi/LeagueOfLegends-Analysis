@@ -1,4 +1,15 @@
 # League of Legends Data Analysis/Match Prediction Project 
+![League Of Legends Picture](https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/e841a20b80d31004d3a1e23303e551cd497f2407/League%20Of%20Legends%20Picture.jpg)
+
+## Table of Contents
+- [Overview](#overview)
+- [Project Structure](#project-structure)
+- [Data Extraction](#data-extraction)
+- [Data Transformation](#data-transformation)
+- [Exploratory Data Analysis (EDA)](#exploratory-data-analysis)
+- [Feature Engineering](#feature-engineering)
+- [Machine Learning](#machine-learning)
+
 ## Overview
 This project focuses on analyzing player data from the popular online game League of Legends using the Riot Games API. The goal is to extract, process, and visualize various player statistics to gain insights into player performance, champion usage, and other key metrics. The project also utilizes certain fields such as kills and assists to predict whether a match outcome will be win or loss. The project is implemented in a Jupyter Notebook and leverages Python libraries such as requests, pandas, matplotlib, seaborn, and sci-kit learn for data extraction, manipulation, visualization, and machine learning.
 
@@ -509,7 +520,7 @@ report = classification_report(y_test, prediction)
 print('Classification Report')
 print(report)
 ```
-<img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/dcd56d03ce593251173eae4803f80c2e8fb94a0f/Evaluation%20Output.png" width="600" height="500" />
+<img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/dcd56d03ce593251173eae4803f80c2e8fb94a0f/Evaluation%20Output.png" width="700" height="400" />
 <br><br>
 
 **Predicting outcome of match with new data**
