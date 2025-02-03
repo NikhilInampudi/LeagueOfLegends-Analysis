@@ -12,10 +12,16 @@
 - [Feature Engineering](#feature-engineering)
 - [Machine Learning](#machine-learning)
 - [Results and Insights](#results-and-insights)
+- [Limitations and Future Work](#limitations-and-future-work)
+- [Conclusion](#conclusion)
 
 ## Overview
 As an avid *League of Legends* player and data science enthusiast, I wanted to combine my passion for gaming with my interest in data analysis. This project aims to provide actionable insights into player performance, champion effectiveness, and match outcomes, helping players like me optimize their strategies and improve their gameplay. This project focuses on analyzing player data by using the Riot Games API. The goal is to extract, process, and visualize various player statistics to gain insights into player performance, champion usage, and other key metrics. The project also utilizes certain fields such as kills and assists to predict whether a match outcome will be win or loss. The project is implemented in a Jupyter Notebook and leverages Python libraries such as requests, pandas, matplotlib, seaborn, and sci-kit learn for data extraction, manipulation, visualization, and machine learning.
 
+**API Links**
+- [Riot API](https://developer.riotgames.com/apis)
+- [API Key](https://developer.riotgames.com/)
+  
 ## Tools Used
 - Visual Studio Code
 - Jupyter Notebook
@@ -555,13 +561,28 @@ print(f'New Predictions: {new_prediction}')
 <img src="https://github.com/NikhilInampudi/LeagueOfLegends-DataScience/blob/0da6250578e393c6223a141eecb31d2f7ed82eb9/Prediction%20Output.png" width="500" height="50" />
 
 
+<br><br>
 ## Results and Insights
-- **Kills and Assists**: These were the most significant predictors of match outcomes, with higher values strongly correlating with wins.
+- **Kills and Assists** were the most significant predictors of match outcomes, with higher values strongly correlating with wins.
 - **Champion Performance**:
-     - Certain champions consistently outperformed others in terms of damage dealt such as Twitch, Ezreal, and Jinx.
-     - Certain champions I am more prone to dying on such as Varus, Lux, LeBlanc.
-     - I get an average of 4.5 - 5 killing sprees a match which means I am more likely to go on long kill streaks.  
-- **Win/Loss Ratio**: The model achieved an accuracy of 75% in predicting match outcomes based on total-game statistics. 
+   - Certain champions consistently outperformed others in terms of damage dealt such as Twitch, Ezreal, and Jinx.
+   - Certain champions I am more prone to dying on such as Varus, Lux, LeBlanc.
+   - I get an average of 4.5 - 5 killing sprees a match which means I am more likely to go on long kill streaks.
+- **Model Testing**: The logistic regression model achieved an accuracy score of 75%, indicating that it correctly predicted the outcome of 75% of the matches in the test set. The model was tested on new data to predict match outcomes based on kills and assists. For example, a match with 27 kills and 20 assists was predicted as a win, while a match with 4 kills and 20 assists was predicted as a loss. These predictions align with the observed trends in the dataset, where higher kill and assist counts are associated with wins.
+
+
+<br><br>
+## Limitations and Future Work
+- **Dataset Size**: The model was trained on only 20 matches, which is a small sample size. A larger dataset would likely improve the model's accuracy and generalizability.
+- **Feature Selection**: While kills and assists were the most predictive features, incorporating additional features such as objective control (e.g., dragons, barons) or team composition could enhance the model's performance.
+- **Advanced Models**: With an increased size in the dataset, experimenting with more advanced models like decision trees, random forests, or gradient boosting could yield better results, and give us more clarity on predicting certain patterns.
+
+
+<br><br>
+## Conclusion
+This project successfully demonstrated how data science techniques can be applied to analyze and predict outcomes in League of Legends. By leveraging the Riot Games API, performing exploratory data analysis, and implementing a logistic regression model, we gained valuable insights into player performance and match outcomes. The model achieved a 75% accuracy rate, which is promising given the small dataset. Future work could focus on expanding the dataset, incorporating additional features, and experimenting with more advanced machine learning algorithms to further improve predictive performance. Ultimately, this project highlights the potential of data-driven approaches to enhance gaming strategies and player performance.
+
+
 
 
 
